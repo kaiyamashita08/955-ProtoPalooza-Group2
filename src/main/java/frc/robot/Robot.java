@@ -9,6 +9,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Elevator;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 
 /**
@@ -26,7 +30,12 @@ public class Robot extends TimedRobot {
   Drivebase drivebase;
   XboxController driveXbox;
   XboxController intakeXbox;
+  //elevator
   Elevator elevator;
+  TalonFX elevatorMotor;
+  DigitalInput limitSwitchTop;
+  DigitalInput limitSwitchBottom;
+  DoubleSolenoid elevatorSolenoidLock;
 
   @Override
   public void robotInit() {}
@@ -45,23 +54,23 @@ public class Robot extends TimedRobot {
     drivebase = new Drivebase();
     driveXbox = new XboxController(0);
     intakeXbox = new XboxController(1);
-    elevator = new Elevator(4, 2, 3);
+    elevatorMotor = new TalonFX(12);
+    limitSwitchTop = new DigitalInput(4);
+    limitSwitchBottom = new DigitalInput(1);
+    elevatorSolenoidLock = new DoubleSolenoid(PneumaticsModuleType.REVPH, 6, 5);
+    elevator = new Elevator(elevatorMotor, limitSwitchTop, limitSwitchBottom, elevatorSolenoidLock);
   }
 
   @Override
   public void teleopPeriodic() {
     drivebase.drive(driveXbox.getLeftY(), driveXbox.getRightX());
-    elevator.moveElevator();
-    if (driveXbox.getAButton()) {
-      elevator.setOverride(!elevator.getOverride());
+    elevator.displayElevatorInfo();
+    if (intakeXbox.getLeftBumper()) {
+      elevator.unlockElevator();
+      elevator.moveElevator(intakeXbox.getLeftY());
+    } else {
+      elevator.lockElevator();
     }
-    if (intakeXbox.getBButton()) {
-      elevator.changeTargetTo(elevator.upperLevelTicks);
-    }
-    if (intakeXbox.getXButton()) {
-      elevator.changeTargetTo(0);
-    }
-    elevator.changeTargetBy(100 * intakeXbox.getLeftY()); // Change the number as needed
   }
 
   @Override
