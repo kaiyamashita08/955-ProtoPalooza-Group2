@@ -1,26 +1,37 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drivebase {
-    CANSparkMax leftFrontCAN = new CANSparkMax(3, MotorType.kBrushless);
-    CANSparkMax leftBackCAN = new CANSparkMax(2, MotorType.kBrushless);
-    CANSparkMax rightFrontCAN = new CANSparkMax(5, MotorType.kBrushless);
-    CANSparkMax rightBackCAN = new CANSparkMax(6, MotorType.kBrushless);
+    CANSparkMax leftLeadMotor;
+    CANSparkMax rightLeadMotor;
+    CANSparkMax leftFollowMotor;
+    CANSparkMax rightFollowMotor;
+    DifferentialDrive differentialDrive;
 
-    MotorControllerGroup m_left = new MotorControllerGroup(leftBackCAN, leftFrontCAN);
-    MotorControllerGroup m_right = new MotorControllerGroup(rightBackCAN, rightFrontCAN);
- 
-    DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
+    public Drivebase(CANSparkMax leftLeadMotor, CANSparkMax rightLeadMotor,CANSparkMax leftFollowMotor, CANSparkMax rightFollowMotor, DifferentialDrive differentialDrive) {
+        this.leftLeadMotor = leftLeadMotor;
+        this.rightLeadMotor = rightLeadMotor;
+        this.leftFollowMotor = leftFollowMotor;
+        this.rightFollowMotor = rightFollowMotor;
+        this.differentialDrive  = differentialDrive;
+        this.leftLeadMotor.setInverted(false);
+        this.rightLeadMotor.setInverted(true);
+        this.leftLeadMotor.setSmartCurrentLimit(40);
+        this.rightLeadMotor.setSmartCurrentLimit(40);
+    }
 
-    public void drive(double xSpeed, double zRotation) {
-        if (xSpeed >= 0.05 || xSpeed <= -0.05) {
-            m_drive.curvatureDrive(xSpeed, zRotation, true);
-        } else {
-            m_drive.curvatureDrive(xSpeed, zRotation, false);
-        }
+    public void drive(double speed, double curvature) {
+        differentialDrive.arcadeDrive(speed, curvature * 0.8);
+    }
+
+    public void displayDriveInfo() {
+        SmartDashboard.putNumber("Left Lead Amps", leftLeadMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Right Lead Amps", rightLeadMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Left Follow Amps", leftFollowMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Right Follow Amps", rightFollowMotor.getOutputCurrent());
     }
 }
