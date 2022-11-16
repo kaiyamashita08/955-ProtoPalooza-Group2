@@ -11,14 +11,16 @@ public class Drivebase {
     CANSparkMax leftFollowMotor;
     CANSparkMax rightFollowMotor;
     DifferentialDrive differentialDrive;
-
+    //probably don't need the motors if we don't display the current limits, we just need the differentialdrive
     public Drivebase(CANSparkMax leftLeadMotor, CANSparkMax rightLeadMotor,CANSparkMax leftFollowMotor, CANSparkMax rightFollowMotor, DifferentialDrive differentialDrive) {
         this.leftLeadMotor = leftLeadMotor;
         this.rightLeadMotor = rightLeadMotor;
         this.leftFollowMotor = leftFollowMotor;
         this.rightFollowMotor = rightFollowMotor;
         this.differentialDrive  = differentialDrive;
-        this.leftLeadMotor.setInverted(false);
+        this.leftLeadMotor.set(0);
+        this.rightLeadMotor.set(0);
+        this.leftLeadMotor.setInverted(false); //shouldn't need the following 4 lines, can comment out later
         this.rightLeadMotor.setInverted(true);
         this.leftLeadMotor.setSmartCurrentLimit(40);
         this.rightLeadMotor.setSmartCurrentLimit(40);

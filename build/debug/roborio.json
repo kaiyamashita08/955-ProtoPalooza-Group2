@@ -1,0 +1,9 @@
+[
+  {
+    "type": "java",
+    "name": "frcJava",
+    "port": 8349,
+    "target": "10.9.55.2",
+    "project": "955-ProtoPalooza-Group2"
+  }
+]
