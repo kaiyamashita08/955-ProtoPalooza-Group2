@@ -1,11 +1,12 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Drivebase {
+public class Drivebase implements AutoCloseable {
     CANSparkMax leftLeadMotor;
     CANSparkMax rightLeadMotor;
     CANSparkMax leftFollowMotor;
@@ -20,10 +21,16 @@ public class Drivebase {
         this.differentialDrive  = differentialDrive;
         this.leftLeadMotor.set(0);
         this.rightLeadMotor.set(0);
-        this.leftLeadMotor.setInverted(false); //shouldn't need the following 4 lines, can comment out later
+        this.leftLeadMotor.setInverted(false);
         this.rightLeadMotor.setInverted(true);
         this.leftLeadMotor.setSmartCurrentLimit(40);
         this.rightLeadMotor.setSmartCurrentLimit(40);
+        this.leftLeadMotor.setIdleMode(IdleMode.kCoast);
+        this.leftFollowMotor.setIdleMode(IdleMode.kCoast);
+        this.rightLeadMotor.setIdleMode(IdleMode.kCoast);
+        this.rightFollowMotor.setIdleMode(IdleMode.kCoast);
+        this.leftFollowMotor.follow(leftLeadMotor);
+        this.rightFollowMotor.follow(rightLeadMotor);
     }
 
     public void drive(double speed, double curvature) {
@@ -35,5 +42,14 @@ public class Drivebase {
         SmartDashboard.putNumber("Right Lead Amps", rightLeadMotor.getOutputCurrent());
         SmartDashboard.putNumber("Left Follow Amps", leftFollowMotor.getOutputCurrent());
         SmartDashboard.putNumber("Right Follow Amps", rightFollowMotor.getOutputCurrent());
+    }
+
+    @Override
+    public void close() throws Exception {
+        leftLeadMotor.close();
+        rightLeadMotor.close();
+        leftFollowMotor.close();
+        rightFollowMotor.close();
+        differentialDrive.close();
     }
 }

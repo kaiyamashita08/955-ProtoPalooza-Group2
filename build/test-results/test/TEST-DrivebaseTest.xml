@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="DrivebaseTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-11-21T00:47:37" hostname="penguin" time="1.679">
+  <properties/>
+  <testcase name="driveTestStraight" classname="DrivebaseTest" time="1.656"/>
+  <testcase name="driveTestTurnInPlace" classname="DrivebaseTest" time="0.006"/>
+  <testcase name="setupTest" classname="DrivebaseTest" time="0.017"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

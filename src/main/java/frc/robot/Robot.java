@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
     leftLeadMotor.setInverted(true);
     rightLeadMotor.setSmartCurrentLimit(40);
     leftLeadMotor.setSmartCurrentLimit(40);
-    leftLeadMotor.setIdleMode(IdleMode.kCoast); // Can change depending on driver preference
+    leftLeadMotor.setIdleMode(IdleMode.kCoast);
     leftFollowMotor.setIdleMode(IdleMode.kCoast);
     rightLeadMotor.setIdleMode(IdleMode.kCoast);
     rightFollowMotor.setIdleMode(IdleMode.kCoast);
