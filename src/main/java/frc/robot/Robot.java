@@ -6,21 +6,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 
-import frc.robot.subsystems.Drivebase;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Intake;
-
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.first.math.controller.PIDController;
+import frc.robot.subsystems.Setup;
+import frc.robot.subsystems.DrivebaseXbox;
+import frc.robot.subsystems.IntakeXbox;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,29 +21,9 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code
    */
-  //Xbox
-  XboxController driveXbox;
-  XboxController intakeXbox;
-  //elevator
-  Elevator elevator;
-  TalonFX elevatorMotor;
-  DigitalInput limitSwitchTop;
-  DigitalInput limitSwitchBottom;
-  //drivebase
-  Drivebase drivebase;
-  CANSparkMax leftLeadMotor;
-  CANSparkMax rightLeadMotor;
-  CANSparkMax leftFollowMotor;
-  CANSparkMax rightFollowMotor;
-  DifferentialDrive differentialDrive;
-  //intake
-  Intake intake;
-  TalonSRX intakeMotor;
-  PIDController intakePID;
-  double kP = 0.002;
-  double kI = 0.000003;
-  double kD = 0.000002;
-
+  Setup setup;
+  DrivebaseXbox drivebaseXbox;
+  IntakeXbox intakeXbox;
   @Override
   public void robotInit() {}
 
@@ -70,60 +38,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    driveXbox = new XboxController(0);
-    intakeXbox = new XboxController(1);
-
-    elevatorMotor = new TalonFX(12);
-    limitSwitchTop = new DigitalInput(4);
-    limitSwitchBottom = new DigitalInput(1);
-    elevator = new Elevator(elevatorMotor, limitSwitchTop, limitSwitchBottom);
-
-    leftLeadMotor = new CANSparkMax(3, MotorType.kBrushless);
-    rightLeadMotor = new CANSparkMax(5, MotorType.kBrushless);
-    leftFollowMotor = new CANSparkMax(2, MotorType.kBrushless);
-    rightFollowMotor = new CANSparkMax(6, MotorType.kBrushless);
-    differentialDrive = new DifferentialDrive(leftLeadMotor, rightLeadMotor);
-
-    rightLeadMotor.setInverted(false);
-    leftLeadMotor.setInverted(true);
-    rightLeadMotor.setSmartCurrentLimit(40);
-    leftLeadMotor.setSmartCurrentLimit(40);
-    leftLeadMotor.setIdleMode(IdleMode.kCoast);
-    leftFollowMotor.setIdleMode(IdleMode.kCoast);
-    rightLeadMotor.setIdleMode(IdleMode.kCoast);
-    rightFollowMotor.setIdleMode(IdleMode.kCoast);
-    leftFollowMotor.follow(leftLeadMotor);
-    rightFollowMotor.follow(rightLeadMotor);
-    drivebase = new Drivebase(leftLeadMotor, rightLeadMotor, leftFollowMotor, rightFollowMotor, differentialDrive);
-    
-    intakeMotor = new TalonSRX(0);//need terminal
-    intakePID = new PIDController(kP, kI, kD);
-    intake = new Intake(intakeMotor, intakePID);
+    setup = new Setup();
+    setup.teleopSetup();
+    drivebaseXbox = setup.getDrivebaseXbox();
+    intakeXbox = setup.getIntakeXbox();
   }
 
   @Override
   public void teleopPeriodic() {
-    if (driveXbox.getLeftBumper()) {
-      drivebase.drive(0.4 * driveXbox.getLeftY(), 0.4 * driveXbox.getRightX());
-    } else {
-      drivebase.drive(driveXbox.getLeftY(), driveXbox.getRightX());
-    }
-    drivebase.displayDriveInfo();
-    elevator.displayElevatorInfo();
-    if (intakeXbox.getLeftTriggerAxis() > 0.5) {
-      elevator.moveElevator(intakeXbox.getLeftY());
-    }
-    if (intakeXbox.getLeftBumperPressed()) {
-      intake.changeTargetby(-1 / 3);
-    }
-    if (intakeXbox.getRightBumperPressed()) {
-      intake.changeTargetby(1 / 3);
-    }
-    if (intakeXbox.getXButton()) {
-      intake.moveIntakeOverride(intakeXbox.getRightY());
-    } else {
-      intake.moveIntake();
-    }
+    intakeXbox.IntakeTick();
+    drivebaseXbox.DrivebaseTick();
   }
 
   @Override

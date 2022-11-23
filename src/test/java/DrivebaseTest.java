@@ -3,7 +3,6 @@ import org.junit.*;
 import static org.mockito.Mockito.*;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.subsystems.Drivebase;
@@ -16,7 +15,9 @@ public class DrivebaseTest {
     CANSparkMax rightLeadMock;
     CANSparkMax rightFollowMock;
     DifferentialDrive differentialDriveMock;
+    DifferentialDrive mockedMotorDrive;
     Drivebase testDrivebase;
+    Drivebase mockedMotorTestDrivebase;
 
     @Before
     public void setup() {
@@ -24,28 +25,23 @@ public class DrivebaseTest {
         leftFollowMock = mock(CANSparkMax.class);
         rightLeadMock = mock(CANSparkMax.class);
         rightFollowMock = mock(CANSparkMax.class);
-        differentialDriveMock = new DifferentialDrive(leftLeadMock, rightLeadMock);
+        differentialDriveMock = mock(DifferentialDrive.class);
+        mockedMotorDrive = new DifferentialDrive(leftLeadMock, rightLeadMock);
+        mockedMotorTestDrivebase = new Drivebase(leftLeadMock, rightLeadMock, leftFollowMock, rightFollowMock, mockedMotorDrive);
         testDrivebase = new Drivebase(leftLeadMock, rightLeadMock, leftFollowMock, rightFollowMock, differentialDriveMock);
     }
 
     @After
     public void shutdown() throws Exception {
+        mockedMotorTestDrivebase.close();
         testDrivebase.close();
     }
 
     @Test
     public void setupTest() {
         // Assert (arrange and act were done in setup())
-        verify(leftFollowMock).follow(leftLeadMock);
-        verify(rightFollowMock).follow(rightLeadMock);
-        verify(leftLeadMock).setInverted(false);
-        verify(rightLeadMock).setInverted(true);
-        verify(leftLeadMock).setSmartCurrentLimit(40);
-        verify(rightLeadMock).setSmartCurrentLimit(40);
-        verify(leftLeadMock).setIdleMode(IdleMode.kCoast);
-        verify(leftFollowMock).setIdleMode(IdleMode.kCoast);
-        verify(rightLeadMock).setIdleMode(IdleMode.kCoast);
-        verify(rightFollowMock).setIdleMode(IdleMode.kCoast);
+        verify(leftLeadMock, times(2)).set(0);
+        verify(rightLeadMock, times(2)).set(0);
     }
 
     @Test
@@ -53,7 +49,7 @@ public class DrivebaseTest {
         // Arrange
         reset(leftLeadMock, leftFollowMock, rightLeadMock, rightFollowMock);
         // Act
-        testDrivebase.drive(0.7, 0);
+        mockedMotorTestDrivebase.drive(0.7, 0);
         // Assert
         verify(leftLeadMock).set(doubleThat((Double motor) -> motor > 0));
         verify(rightLeadMock).set(doubleThat((Double motor) -> motor > 0));
@@ -64,9 +60,19 @@ public class DrivebaseTest {
         // Arrange
         reset(leftLeadMock, leftFollowMock, rightLeadMock, rightFollowMock);
         // Act
-        testDrivebase.drive(0, 0.6);
+        mockedMotorTestDrivebase.drive(0, 0.6);
         // Assert
         verify(leftLeadMock).set(doubleThat((Double motor) -> motor > 0));
         verify(rightLeadMock).set(doubleThat((Double motor) -> motor < 0));
+    }
+
+    @Test
+    public void doesDriveWork() {
+        // Arrange
+        reset(leftLeadMock,leftFollowMock, rightLeadMock, rightFollowMock, differentialDriveMock);
+        // Act
+        testDrivebase.drive(0.536, -0.322);
+        // Assert
+        verify(differentialDriveMock).arcadeDrive(0.536, -0.322 * 0.8);
     }
 }

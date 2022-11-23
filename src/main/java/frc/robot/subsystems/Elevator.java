@@ -24,7 +24,6 @@ public class Elevator implements AutoCloseable {
     }
 
     public void moveElevator(double joystickPosition) {
-        joystickPosition = -joystickPosition;
         if (limitSwitchBottom.get() == false) {
             resetPosition();
         }
