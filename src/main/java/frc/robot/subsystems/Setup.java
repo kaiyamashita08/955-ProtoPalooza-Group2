@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Setup implements AutoCloseable{
     //Xbox
-    XboxController driveXboxController;
-    XboxController intakeXboxController;
+    XboxController drivebaseXbox;
+    XboxController intakeXbox;
     //elevator
     Elevator elevator;
     TalonFX elevatorMotor;
@@ -35,12 +35,12 @@ public class Setup implements AutoCloseable{
     double kI = 0.000003;
     double kD = 0.000002;
     // DrivebaseXbox
-    DrivebaseXbox drivebaseXbox;
-    IntakeXbox intakeXbox;
+    DrivebaseControl drivebaseControl;
+    IntakeControl intakeControl;
 
     public void teleopSetup() {
-        driveXboxController = new XboxController(0);
-        intakeXboxController = new XboxController(1);
+        drivebaseXbox = new XboxController(0);
+        intakeXbox = new XboxController(1);
     
         elevatorMotor = new TalonFX(12);
         limitSwitchTop = new DigitalInput(4);
@@ -69,16 +69,16 @@ public class Setup implements AutoCloseable{
         intakePID = new PIDController(kP, kI, kD);
         intake = new Intake(intakeMotor, intakePID);
 
-        drivebaseXbox = new DrivebaseXbox(driveXboxController, drivebase);
-        intakeXbox = new IntakeXbox(intakeXboxController, elevator, intake);
+        drivebaseControl = new DrivebaseControl(drivebaseXbox, drivebase);
+        intakeControl = new IntakeControl(intakeXbox, elevator, intake);
     }
     
-    public DrivebaseXbox getDrivebaseXbox() {
-        return drivebaseXbox;
+    public DrivebaseControl getDrivebaseXbox() {
+        return drivebaseControl;
     }
 
-    public IntakeXbox getIntakeXbox() {
-        return intakeXbox;
+    public IntakeControl getIntakeXbox() {
+        return intakeControl;
     }
     
     @Override
@@ -94,7 +94,7 @@ public class Setup implements AutoCloseable{
         drivebase.close();
         intakePID.close();
         // intake.close();
-        // drivebaseXbox.close();  (uncomment when we can close these)
-        // intakeXbox.close();
+        // drivebaseControl.close();  (uncomment when we can close these)
+        // intakeControl.close();
     }
 }
