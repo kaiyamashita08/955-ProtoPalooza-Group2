@@ -37,6 +37,8 @@ public class Setup implements AutoCloseable{
     // DrivebaseXbox
     DrivebaseControl drivebaseControl;
     IntakeControl intakeControl;
+    // Display
+    DisplayControl displayControl;
 
     public void teleopSetup() {
         drivebaseXbox = new XboxController(0);
@@ -63,7 +65,7 @@ public class Setup implements AutoCloseable{
         rightFollowMotor.setIdleMode(IdleMode.kCoast);
         leftFollowMotor.follow(leftLeadMotor);
         rightFollowMotor.follow(rightLeadMotor);
-        drivebase = new Drivebase(leftLeadMotor, rightLeadMotor, leftFollowMotor, rightFollowMotor, differentialDrive);
+        drivebase = new Drivebase(differentialDrive);
         
         intakeMotor = new TalonSRX(0);//need terminal
         intakePID = new PIDController(kP, kI, kD);
@@ -71,14 +73,20 @@ public class Setup implements AutoCloseable{
 
         drivebaseControl = new DrivebaseControl(drivebaseXbox, drivebase);
         intakeControl = new IntakeControl(intakeXbox, elevator, intake);
+
+        displayControl = new DisplayControl(elevatorMotor, limitSwitchTop, limitSwitchBottom, leftLeadMotor, rightLeadMotor, leftFollowMotor, rightFollowMotor);
     }
     
-    public DrivebaseControl getDrivebaseXbox() {
+    public DrivebaseControl getDrivebaseControl() {
         return drivebaseControl;
     }
 
-    public IntakeControl getIntakeXbox() {
+    public IntakeControl getIntakeControl() {
         return intakeControl;
+    }
+    
+    public DisplayControl getDisplayControl() {
+        return displayControl;
     }
     
     @Override
@@ -93,6 +101,7 @@ public class Setup implements AutoCloseable{
         differentialDrive.close();
         drivebase.close();
         intakePID.close();
+        displayControl.close();
         // intake.close();
         // drivebaseControl.close();  (uncomment when we can close these)
         // intakeControl.close();

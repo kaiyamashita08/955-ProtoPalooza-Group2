@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import frc.robot.subsystems.Setup;
+import frc.robot.subsystems.DisplayControl;
 import frc.robot.subsystems.DrivebaseControl;
 import frc.robot.subsystems.IntakeControl;
 
@@ -24,6 +25,8 @@ public class Robot extends TimedRobot {
   Setup setup;
   DrivebaseControl drivebaseControl;
   IntakeControl intakeControl;
+  DisplayControl displayControl;
+
   @Override
   public void robotInit() {}
 
@@ -42,12 +45,14 @@ public class Robot extends TimedRobot {
     setup.teleopSetup();
     drivebaseControl = setup.getDrivebaseControl();
     intakeControl = setup.getIntakeControl();
+    displayControl = setup.getDisplayControl();
   }
 
   @Override
   public void teleopPeriodic() {
     intakeControl.IntakeTick();
     drivebaseControl.DrivebaseTick();
+    displayControl.DisplayInfo();
   }
 
   @Override

@@ -2,22 +2,21 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.XboxController;
 
-public class DrivebaseXbox implements AutoCloseable {
-    XboxController driveXboxController;
+public class DrivebaseControl implements AutoCloseable {
+    XboxController drivebaseXbox;
     Drivebase drivebase;
 
-    public DrivebaseXbox(XboxController driveXboxController, Drivebase drivebase) {
-        this.driveXboxController = driveXboxController;
+    public DrivebaseControl(XboxController drivebaseXbox, Drivebase drivebase) {
+        this.drivebaseXbox = drivebaseXbox;
         this.drivebase = drivebase;
     }
 
     public void DrivebaseTick() {
-        if (driveXboxController.getLeftBumper()) {
-            drivebase.drive(0.4 * driveXboxController.getLeftY(), 0.4 * driveXboxController.getRightX());
+        if (drivebaseXbox.getLeftBumper()) {
+            drivebase.drive(0.4 * drivebaseXbox.getLeftY(), 0.4 * drivebaseXbox.getRightX());
         } else {
-            drivebase.drive(driveXboxController.getLeftY(), driveXboxController.getRightX());
+            drivebase.drive(drivebaseXbox.getLeftY(), drivebaseXbox.getRightX());
         }
-        drivebase.displayDriveInfo();
     }
 
     @Override

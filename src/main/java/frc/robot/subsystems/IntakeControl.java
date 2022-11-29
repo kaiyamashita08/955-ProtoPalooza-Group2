@@ -28,6 +28,5 @@ public class IntakeControl {
         // } else {
         //   intake.moveIntake();
         // }
-        elevator.displayElevatorInfo();
     }
 }
