@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator implements AutoCloseable {
     private TalonFX elevatorMotor;
@@ -39,13 +38,6 @@ public class Elevator implements AutoCloseable {
 
     public void resetPosition() {
         elevatorMotor.setSelectedSensorPosition(0);
-    }
-
-    public void displayElevatorInfo() {
-        SmartDashboard.putBoolean("Elevator Top Limit Hit", limitSwitchTop.get());
-        SmartDashboard.putBoolean("Elevator Bottom Limit Hit", limitSwitchBottom.get());
-        SmartDashboard.putNumber("Elevator Amp", elevatorMotor.getStatorCurrent());
-        SmartDashboard.putNumber("Elevator Position", elevatorMotor.getSelectedSensorPosition());
     }
 
     @Override

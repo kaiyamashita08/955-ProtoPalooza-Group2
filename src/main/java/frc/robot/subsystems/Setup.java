@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class Setup implements AutoCloseable{
     //Xbox
-    XboxController driveXboxController;
-    XboxController intakeXboxController;
+    XboxController drivebaseXbox;
+    XboxController intakeXbox;
     //elevator
     Elevator elevator;
     TalonFX elevatorMotor;
@@ -35,12 +35,14 @@ public class Setup implements AutoCloseable{
     double kI = 0.000003;
     double kD = 0.000002;
     // DrivebaseXbox
-    DrivebaseXbox drivebaseXbox;
-    IntakeXbox intakeXbox;
+    DrivebaseControl drivebaseControl;
+    IntakeControl intakeControl;
+    // Display
+    DisplayControl displayControl;
 
     public void teleopSetup() {
-        driveXboxController = new XboxController(0);
-        intakeXboxController = new XboxController(1);
+        drivebaseXbox = new XboxController(0);
+        intakeXbox = new XboxController(1);
     
         elevatorMotor = new TalonFX(12);
         limitSwitchTop = new DigitalInput(4);
@@ -63,22 +65,28 @@ public class Setup implements AutoCloseable{
         rightFollowMotor.setIdleMode(IdleMode.kCoast);
         leftFollowMotor.follow(leftLeadMotor);
         rightFollowMotor.follow(rightLeadMotor);
-        drivebase = new Drivebase(leftLeadMotor, rightLeadMotor, leftFollowMotor, rightFollowMotor, differentialDrive);
+        drivebase = new Drivebase(differentialDrive);
         
         intakeMotor = new TalonSRX(0);//need terminal
         intakePID = new PIDController(kP, kI, kD);
         intake = new Intake(intakeMotor, intakePID);
 
-        drivebaseXbox = new DrivebaseXbox(driveXboxController, drivebase);
-        intakeXbox = new IntakeXbox(intakeXboxController, elevator, intake);
+        drivebaseControl = new DrivebaseControl(drivebaseXbox, drivebase);
+        intakeControl = new IntakeControl(intakeXbox, elevator, intake);
+
+        displayControl = new DisplayControl(elevatorMotor, limitSwitchTop, limitSwitchBottom, leftLeadMotor, rightLeadMotor, leftFollowMotor, rightFollowMotor);
     }
     
-    public DrivebaseXbox getDrivebaseXbox() {
-        return drivebaseXbox;
+    public DrivebaseControl getDrivebaseControl() {
+        return drivebaseControl;
     }
 
-    public IntakeXbox getIntakeXbox() {
-        return intakeXbox;
+    public IntakeControl getIntakeControl() {
+        return intakeControl;
+    }
+    
+    public DisplayControl getDisplayControl() {
+        return displayControl;
     }
     
     @Override
@@ -93,8 +101,9 @@ public class Setup implements AutoCloseable{
         differentialDrive.close();
         drivebase.close();
         intakePID.close();
+        displayControl.close();
         // intake.close();
-        // drivebaseXbox.close();  (uncomment when we can close these)
-        // intakeXbox.close();
+        // drivebaseControl.close();  (uncomment when we can close these)
+        // intakeControl.close();
     }
 }

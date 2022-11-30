@@ -7,8 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import frc.robot.subsystems.Setup;
-import frc.robot.subsystems.DrivebaseXbox;
-import frc.robot.subsystems.IntakeXbox;
+import frc.robot.subsystems.DisplayControl;
+import frc.robot.subsystems.DrivebaseControl;
+import frc.robot.subsystems.IntakeControl;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -22,8 +23,10 @@ public class Robot extends TimedRobot {
    * initialization code
    */
   Setup setup;
-  DrivebaseXbox drivebaseXbox;
-  IntakeXbox intakeXbox;
+  DrivebaseControl drivebaseControl;
+  IntakeControl intakeControl;
+  DisplayControl displayControl;
+
   @Override
   public void robotInit() {}
 
@@ -40,14 +43,16 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     setup = new Setup();
     setup.teleopSetup();
-    drivebaseXbox = setup.getDrivebaseXbox();
-    intakeXbox = setup.getIntakeXbox();
+    drivebaseControl = setup.getDrivebaseControl();
+    intakeControl = setup.getIntakeControl();
+    displayControl = setup.getDisplayControl();
   }
 
   @Override
   public void teleopPeriodic() {
-    intakeXbox.IntakeTick();
-    drivebaseXbox.DrivebaseTick();
+    intakeControl.IntakeTick();
+    drivebaseControl.DrivebaseTick();
+    displayControl.DisplayInfo();
   }
 
   @Override

@@ -27,8 +27,8 @@ public class DrivebaseTest {
         rightFollowMock = mock(CANSparkMax.class);
         differentialDriveMock = mock(DifferentialDrive.class);
         mockedMotorDrive = new DifferentialDrive(leftLeadMock, rightLeadMock);
-        mockedMotorTestDrivebase = new Drivebase(leftLeadMock, rightLeadMock, leftFollowMock, rightFollowMock, mockedMotorDrive);
-        testDrivebase = new Drivebase(leftLeadMock, rightLeadMock, leftFollowMock, rightFollowMock, differentialDriveMock);
+        mockedMotorTestDrivebase = new Drivebase(mockedMotorDrive);
+        testDrivebase = new Drivebase(differentialDriveMock);
     }
 
     @After
@@ -40,8 +40,9 @@ public class DrivebaseTest {
     @Test
     public void setupTest() {
         // Assert (arrange and act were done in setup())
-        verify(leftLeadMock, times(2)).set(0);
-        verify(rightLeadMock, times(2)).set(0);
+        verify(differentialDriveMock).arcadeDrive(0, 0);
+        verify(leftLeadMock).set(0);
+        verify(rightLeadMock).set(0);
     }
 
     @Test
