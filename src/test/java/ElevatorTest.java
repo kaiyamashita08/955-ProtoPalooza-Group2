@@ -80,7 +80,7 @@ public class ElevatorTest {
         // Arrange
         reset(elevatorMock, topLimitMock, bottomLimitMock);
         when(topLimitMock.get()).thenReturn(true);
-        when(elevatorMock.getSelectedSensorPosition()).thenReturn(10000.);
+        when(elevatorMock.getSelectedSensorPosition()).thenReturn(220000.);
         // Act
         testElevator.moveElevator(-0.3);
         // Assert

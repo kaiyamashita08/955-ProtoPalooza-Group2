@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.XboxController;
 
-public class IntakeControl {
+public class IntakeControl implements AutoCloseable {
     XboxController intakeXbox;
     Elevator elevator;
     Intake intake;
@@ -28,5 +28,10 @@ public class IntakeControl {
         // } else {
         //   intake.moveIntake();
         // }
+    }
+
+    public void close() throws Exception {
+        elevator.close();
+        //intake.close();
     }
 }

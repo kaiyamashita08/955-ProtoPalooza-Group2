@@ -10,6 +10,7 @@ public class Elevator implements AutoCloseable {
     private TalonFX elevatorMotor;
     private  DigitalInput limitSwitchTop;
     private  DigitalInput limitSwitchBottom;
+    private final int topLimitTicks = 240000;
 
     //note:  the inputs into this function are motors, digital inputs and doublesolenoids, not integers for the ports
     public Elevator(TalonFX elevatorMotor, DigitalInput limitSwitchTop, DigitalInput limitSwitchBottom) {
@@ -29,8 +30,10 @@ public class Elevator implements AutoCloseable {
         if (joystickPosition < 0 && elevatorMotor.getSelectedSensorPosition() <= 5000) {
             elevatorMotor.set(ControlMode.PercentOutput, 0);
         } else if (joystickPosition > 0 && limitSwitchTop.get() == true) {
-            elevatorMotor.setSelectedSensorPosition(300000);
+            elevatorMotor.setSelectedSensorPosition(topLimitTicks);
             elevatorMotor.set(ControlMode.PercentOutput, 0);
+        } else if ((elevatorMotor.getSelectedSensorPosition() > topLimitTicks - 30000 && joystickPosition > 0) || (elevatorMotor.getSelectedSensorPosition() < 30000 && joystickPosition < 0)) {
+            elevatorMotor.set(ControlMode.PercentOutput, joystickPosition * 0.3);
         } else {
             elevatorMotor.set(ControlMode.PercentOutput, joystickPosition);
         }

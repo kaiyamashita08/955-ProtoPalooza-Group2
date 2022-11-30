@@ -13,9 +13,9 @@ public class DrivebaseControl implements AutoCloseable {
 
     public void DrivebaseTick() {
         if (drivebaseXbox.getLeftBumper()) {
-            drivebase.drive(0.4 * drivebaseXbox.getLeftY(), 0.4 * drivebaseXbox.getRightX());
+            drivebase.drive(0.4 * drivebaseXbox.getLeftY(), -0.4 * drivebaseXbox.getRightX());
         } else {
-            drivebase.drive(drivebaseXbox.getLeftY(), drivebaseXbox.getRightX());
+            drivebase.drive(drivebaseXbox.getLeftY(), -drivebaseXbox.getRightX());
         }
     }
 
