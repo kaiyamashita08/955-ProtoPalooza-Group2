@@ -4,12 +4,15 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.Setup;
 import frc.robot.subsystems.DisplayControl;
 import frc.robot.subsystems.DrivebaseControl;
 import frc.robot.subsystems.IntakeControl;
+import frc.robot.subsystems.IntakeMotorTest;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -26,6 +29,11 @@ public class Robot extends TimedRobot {
   DrivebaseControl drivebaseControl;
   IntakeControl intakeControl;
   DisplayControl displayControl;
+
+  // Test
+  IntakeMotorTest intakeMotorTest;
+  TalonSRX intakeMotor = new TalonSRX(4);
+  XboxController testXbox = new XboxController(0);
 
   @Override
   public void robotInit() {}
@@ -46,13 +54,16 @@ public class Robot extends TimedRobot {
     drivebaseControl = setup.getDrivebaseControl();
     intakeControl = setup.getIntakeControl();
     displayControl = setup.getDisplayControl();
+
+    intakeMotorTest = new IntakeMotorTest(intakeMotor, testXbox);
   }
 
   @Override
   public void teleopPeriodic() {
-    intakeControl.IntakeTick();
-    drivebaseControl.DrivebaseTick();
-    displayControl.DisplayInfo();
+    // intakeControl.IntakeTick();
+    // drivebaseControl.DrivebaseTick();
+    // displayControl.DisplayInfo();
+    intakeMotorTest.tick();
   }
 
   @Override
