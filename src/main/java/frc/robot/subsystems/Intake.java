@@ -8,7 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class Intake {
     // 4096 units per rotation for TalonSRX's
-    private double gearRatio = 50;
+    private double gearRatio = 60;
     private PIDController pidController;
     private TalonSRX intakeMotor;
     public Intake(TalonSRX intakeMotor, PIDController pidController) {

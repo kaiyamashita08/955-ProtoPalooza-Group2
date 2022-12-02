@@ -56,7 +56,7 @@ public class ElevatorTest {
         // Arrange
         reset(elevatorMock, topLimitMock, bottomLimitMock);
         when(topLimitMock.get()).thenReturn(false);
-        when(elevatorMock.getSelectedSensorPosition()).thenReturn(10000.);
+        when(elevatorMock.getSelectedSensorPosition()).thenReturn(100000.);
         // Act
         testElevator.moveElevator(0.5);
         // Assert
@@ -104,11 +104,34 @@ public class ElevatorTest {
     public void cantMoveUpAtTop() {
         // Arrange
         reset(elevatorMock, topLimitMock, bottomLimitMock);
+        when(elevatorMock.getSelectedSensorPosition()).thenReturn(150000.);
         when(topLimitMock.get()).thenReturn(true);
         // Act
-        testElevator.moveElevator(-0.3);
+        testElevator.moveElevator(0.3);
         // Assert
         verify(elevatorMock).set(ControlMode.PercentOutput, 0);
-        verify(elevatorMock, never()).set(ControlMode.PercentOutput, -0.3);
+        verify(elevatorMock, never()).set(ControlMode.PercentOutput, 0.3);
+    }
+
+    @Test
+    public void slowsDownAtTop() {
+        // Arrange
+        reset(elevatorMock, topLimitMock, bottomLimitMock);
+        when(elevatorMock.getSelectedSensorPosition()).thenReturn(230000.);
+        // Act
+        testElevator.moveElevator(0.9);
+        // Assert
+        verify(elevatorMock).set(argThat((ControlMode value) -> value == ControlMode.PercentOutput), doubleThat((Double value) -> value > 0.26 && value < 0.28));
+    }
+
+    @Test
+    public void slowsDownAtBottom() {
+        // Arrange
+        reset(elevatorMock, topLimitMock, bottomLimitMock);
+        when(elevatorMock.getSelectedSensorPosition()).thenReturn(10000.);
+        // Act
+        testElevator.moveElevator(-0.9);
+        // Assert
+        verify(elevatorMock).set(argThat((ControlMode value) -> value == ControlMode.PercentOutput), doubleThat((Double value) -> value < -0.26 && value > -0.28));
     }
 }

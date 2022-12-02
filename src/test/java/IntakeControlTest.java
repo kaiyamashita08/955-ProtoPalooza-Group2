@@ -27,4 +27,30 @@ public class IntakeControlTest {
     public void shutdown() throws Exception {
         testIntakeControl.close();
     }
+
+    @Test
+    public void doesntMoveWithoutLeftTrigger() {
+        // Arrange
+        reset(mockElevator, mockIntakeXbox, mockIntake);
+        when(mockIntakeXbox.getLeftTriggerAxis()).thenReturn(0.2);
+        when(mockIntakeXbox.getLeftY()).thenReturn(0.8);
+        // Act
+        testIntakeControl.IntakeTick();
+        // Assert
+        verify(mockElevator).moveElevator(0);
+        verify(mockElevator, never()).moveElevator(0.8);
+    }
+
+    @Test
+    public void movesProperly() {
+        // Arrange
+        reset(mockElevator, mockIntakeXbox, mockIntake);
+        when(mockIntakeXbox.getLeftTriggerAxis()).thenReturn(0.9);
+        when(mockIntakeXbox.getLeftY()).thenReturn(0.8);
+        // Act
+        testIntakeControl.IntakeTick();
+        // Assert
+        verify(mockElevator, never()).moveElevator(0);
+        verify(mockElevator).moveElevator(-0.8);
+    }
 }

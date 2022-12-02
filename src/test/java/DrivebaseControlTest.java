@@ -23,4 +23,30 @@ public class DrivebaseControlTest {
     public void shutdown() throws Exception {
         mockDrivebase.close();
     }
+
+    @Test
+    public void motorTestNormalMovement() {
+        // Arrange
+        reset(mockDrivebase, mockDriveXbox);
+        when(mockDriveXbox.getLeftBumper()).thenReturn(false);
+        when(mockDriveXbox.getLeftY()).thenReturn(0.7);
+        when(mockDriveXbox.getRightX()).thenReturn(0.4);
+        // Act
+        testDrivebaseXbox.DrivebaseTick();
+        // Assert
+        verify(mockDrivebase).drive(0.7, -0.4);
+    }
+
+    @Test
+    public void motorTestSlowMovement() {
+        // Arrange
+        reset(mockDrivebase, mockDriveXbox);
+        when(mockDriveXbox.getLeftBumper()).thenReturn(true);
+        when(mockDriveXbox.getLeftY()).thenReturn(0.7);
+        when(mockDriveXbox.getRightX()).thenReturn(0.4);
+        // Act
+        testDrivebaseXbox.DrivebaseTick();
+        // Assert
+        verify(mockDrivebase).drive(doubleThat((Double value) -> value > 0.275 && value < 0.285), doubleThat((Double value) -> value > -0.165 && value < -0.155));
+    }
 }

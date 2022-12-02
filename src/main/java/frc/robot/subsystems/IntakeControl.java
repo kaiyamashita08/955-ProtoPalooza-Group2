@@ -16,6 +16,8 @@ public class IntakeControl implements AutoCloseable {
     public void IntakeTick() {
         if (intakeXbox.getLeftTriggerAxis() > 0.5) {
           elevator.moveElevator(-intakeXbox.getLeftY());
+        } else {
+            elevator.moveElevator(0);
         }
         // if (intakeXbox.getLeftBumperPressed()) {
         //   intake.changeTargetby(-1 / 3);

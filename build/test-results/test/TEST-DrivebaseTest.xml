@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="DrivebaseTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2022-11-30T04:44:08" hostname="penguin" time="1.739">
+<testsuite name="DrivebaseTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2022-12-02T03:03:50" hostname="penguin" time="0.704">
   <properties/>
-  <testcase name="driveTestStraight" classname="DrivebaseTest" time="1.719"/>
-  <testcase name="driveTestTurnInPlace" classname="DrivebaseTest" time="0.007"/>
-  <testcase name="doesDriveWork" classname="DrivebaseTest" time="0.004"/>
-  <testcase name="setupTest" classname="DrivebaseTest" time="0.007"/>
+  <testcase name="driveTestStraight" classname="DrivebaseTest" time="0.687"/>
+  <testcase name="driveTestTurnInPlace" classname="DrivebaseTest" time="0.013"/>
+  <testcase name="doesDriveWork" classname="DrivebaseTest" time="0.001"/>
+  <testcase name="setupTest" classname="DrivebaseTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

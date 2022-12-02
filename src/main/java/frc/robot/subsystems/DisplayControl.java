@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,8 +16,10 @@ public class DisplayControl implements AutoCloseable{
     CANSparkMax rightLeadMotor;
     CANSparkMax leftFollowMotor;
     CANSparkMax rightFollowMotor;
+    // intake
+    TalonSRX intakeMotor;
     
-    public DisplayControl(TalonFX elevatorMotor, DigitalInput limitSwitchTop, DigitalInput limitSwitchBottom, CANSparkMax leftLeadMotor, CANSparkMax rightLeadMotor, CANSparkMax leftFollowMotor, CANSparkMax rightFollowMotor) {
+    public DisplayControl(TalonFX elevatorMotor, DigitalInput limitSwitchTop, DigitalInput limitSwitchBottom, CANSparkMax leftLeadMotor, CANSparkMax rightLeadMotor, CANSparkMax leftFollowMotor, CANSparkMax rightFollowMotor, TalonSRX intakeMotor) {
         this.elevatorMotor = elevatorMotor;
         this.limitSwitchTop = limitSwitchTop;
         this.limitSwitchBottom = limitSwitchBottom;
@@ -24,6 +27,7 @@ public class DisplayControl implements AutoCloseable{
         this.rightLeadMotor = rightLeadMotor;
         this.leftFollowMotor = leftFollowMotor;
         this.rightFollowMotor = rightFollowMotor;
+        this.intakeMotor = intakeMotor;
     }
 
     public void DisplayInfo() {
@@ -40,6 +44,7 @@ public class DisplayControl implements AutoCloseable{
         SmartDashboard.putNumber("Elevator Position", elevatorMotor.getSelectedSensorPosition());
 
         // Intake
+        SmartDashboard.putNumber("Intake Position", intakeMotor.getSelectedSensorPosition());
     }
 
     public void close() throws Exception {

@@ -74,7 +74,7 @@ public class Setup implements AutoCloseable{
         drivebaseControl = new DrivebaseControl(drivebaseXbox, drivebase);
         intakeControl = new IntakeControl(intakeXbox, elevator, intake);
 
-        displayControl = new DisplayControl(elevatorMotor, limitSwitchTop, limitSwitchBottom, leftLeadMotor, rightLeadMotor, leftFollowMotor, rightFollowMotor);
+        displayControl = new DisplayControl(elevatorMotor, limitSwitchTop, limitSwitchBottom, leftLeadMotor, rightLeadMotor, leftFollowMotor, rightFollowMotor, intakeMotor);
     }
     
     public DrivebaseControl getDrivebaseControl() {

@@ -22,7 +22,7 @@ public class Elevator implements AutoCloseable {
         SupplyCurrentLimitConfiguration currentLimitConfiguration = new SupplyCurrentLimitConfiguration(true, 40, 40, 0);
         this.elevatorMotor.configSupplyCurrentLimit(currentLimitConfiguration);
     }
-
+    
     public void moveElevator(double joystickPosition) {
         if (limitSwitchBottom.get() == false) {
             resetPosition();
