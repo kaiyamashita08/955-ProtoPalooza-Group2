@@ -32,8 +32,8 @@ public class Setup implements AutoCloseable{
     TalonSRX intakeMotor;
     PIDController intakePID;
     double kP = 0.002;
-    double kI = 0.000003;
-    double kD = 0.000002;
+    double kI = 0.00000;
+    double kD = 0.00000;
     // DrivebaseXbox
     DrivebaseControl drivebaseControl;
     IntakeControl intakeControl;
@@ -68,6 +68,8 @@ public class Setup implements AutoCloseable{
         drivebase = new Drivebase(differentialDrive);
         
         intakeMotor = new TalonSRX(0);//need terminal
+        intakeMotor.configPeakCurrentLimit(40);
+        intakeMotor.enableCurrentLimit(true);
         intakePID = new PIDController(kP, kI, kD);
         intake = new Intake(intakeMotor, intakePID);
 

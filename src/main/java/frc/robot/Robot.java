@@ -31,9 +31,9 @@ public class Robot extends TimedRobot {
   DisplayControl displayControl;
 
   // Test
-  IntakeMotorTest intakeMotorTest;
-  TalonSRX intakeMotor = new TalonSRX(4);
-  XboxController testXbox = new XboxController(0);
+  // IntakeMotorTest intakeMotorTest;
+  // TalonSRX intakeMotor = new TalonSRX(2);
+  // XboxController testXbox = new XboxController(0);
 
   @Override
   public void robotInit() {}
@@ -55,15 +55,15 @@ public class Robot extends TimedRobot {
     intakeControl = setup.getIntakeControl();
     displayControl = setup.getDisplayControl();
 
-    intakeMotorTest = new IntakeMotorTest(intakeMotor, testXbox);
+    // intakeMotorTest = new IntakeMotorTest(intakeMotor, testXbox);
   }
 
   @Override
   public void teleopPeriodic() {
-    // intakeControl.IntakeTick();
-    // drivebaseControl.DrivebaseTick();
-    // displayControl.DisplayInfo();
-    intakeMotorTest.tick();
+    intakeControl.IntakeTick();
+    drivebaseControl.DrivebaseTick();
+    displayControl.DisplayInfo();
+    // intakeMotorTest.tick();
   }
 
   @Override

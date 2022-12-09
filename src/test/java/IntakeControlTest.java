@@ -33,7 +33,7 @@ public class IntakeControlTest {
         // Arrange
         reset(mockElevator, mockIntakeXbox, mockIntake);
         when(mockIntakeXbox.getLeftTriggerAxis()).thenReturn(0.2);
-        when(mockIntakeXbox.getLeftY()).thenReturn(0.8);
+        when(mockIntakeXbox.getRightY()).thenReturn(0.8);
         // Act
         testIntakeControl.IntakeTick();
         // Assert
@@ -46,7 +46,7 @@ public class IntakeControlTest {
         // Arrange
         reset(mockElevator, mockIntakeXbox, mockIntake);
         when(mockIntakeXbox.getLeftTriggerAxis()).thenReturn(0.9);
-        when(mockIntakeXbox.getLeftY()).thenReturn(0.8);
+        when(mockIntakeXbox.getRightY()).thenReturn(0.8);
         // Act
         testIntakeControl.IntakeTick();
         // Assert

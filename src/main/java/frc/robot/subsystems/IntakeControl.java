@@ -15,25 +15,26 @@ public class IntakeControl implements AutoCloseable {
 
     public void IntakeTick() {
         if (intakeXbox.getLeftTriggerAxis() > 0.5) {
-          elevator.moveElevator(-intakeXbox.getLeftY());
+            elevator.moveElevator(-intakeXbox.getRightY());
         } else {
             elevator.moveElevator(0);
         }
-        // if (intakeXbox.getLeftBumperPressed()) {
-        //   intake.changeTargetby(-1 / 3);
-        // }
-        // if (intakeXbox.getRightBumperPressed()) {
-        //   intake.changeTargetby(1 / 3);
-        // }
-        // if (intakeXbox.getXButton()) {
-        //   intake.moveIntakeOverride(intakeXbox.getRightY());
-        // } else {
-        //   intake.moveIntake();
-        // }
+        if (intakeXbox.getXButton()) {
+            intake.moveIntakeOverride(-intakeXbox.getLeftY());
+        } else {
+            if (intakeXbox.getRightBumperPressed()) {
+                intake.changeState();
+            }
+            intake.moveIntake();
+        }
+        if (intakeXbox.getYButton()) {
+            intake.setStateTo(true);
+            intake.resetSetpoint();
+        }
     }
 
     public void close() throws Exception {
         elevator.close();
-        //intake.close();
+        intake.close();
     }
 }
