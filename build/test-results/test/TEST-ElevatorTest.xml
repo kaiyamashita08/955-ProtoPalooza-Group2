@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ElevatorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2022-12-09T02:28:46" hostname="penguin" time="1.442">
+<testsuite name="ElevatorTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2022-12-21T02:29:05" hostname="penguin" time="0.682">
   <properties/>
-  <testcase name="resetPositionTest" classname="ElevatorTest" time="1.41"/>
-  <testcase name="cantMoveUpAtTop" classname="ElevatorTest" time="0.008"/>
-  <testcase name="moveDownAtTop" classname="ElevatorTest" time="0.002"/>
-  <testcase name="moveUpAtBottom" classname="ElevatorTest" time="0.001"/>
-  <testcase name="slowsDownAtTop" classname="ElevatorTest" time="0.009"/>
-  <testcase name="canMoveNormally" classname="ElevatorTest" time="0.002"/>
-  <testcase name="slowsDownAtBottom" classname="ElevatorTest" time="0.002"/>
-  <testcase name="cantMoveDownAtBottom" classname="ElevatorTest" time="0.002"/>
+  <testcase name="resetPositionTest" classname="ElevatorTest" time="0.624"/>
+  <testcase name="cantMoveUpAtTop" classname="ElevatorTest" time="0.004"/>
+  <testcase name="moveDownAtTop" classname="ElevatorTest" time="0.004"/>
+  <testcase name="moveUpAtBottom" classname="ElevatorTest" time="0.015"/>
+  <testcase name="slowsDownAtTop" classname="ElevatorTest" time="0.004"/>
+  <testcase name="canMoveNormally" classname="ElevatorTest" time="0.004"/>
+  <testcase name="slowsDownAtBottom" classname="ElevatorTest" time="0.005"/>
+  <testcase name="cantMoveDownAtBottom" classname="ElevatorTest" time="0.013"/>
   <testcase name="setupTest" classname="ElevatorTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

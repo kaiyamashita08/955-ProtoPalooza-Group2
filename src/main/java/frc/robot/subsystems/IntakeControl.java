@@ -21,15 +21,15 @@ public class IntakeControl implements AutoCloseable {
         }
         if (intakeXbox.getXButton()) {
             intake.moveIntakeOverride(-intakeXbox.getLeftY());
-        } else {
-            if (intakeXbox.getRightBumperPressed()) {
-                intake.changeState();
-            }
-            intake.moveIntake();
-        }
+        } //else {
+        //     if (intakeXbox.getRightBumperPressed()) {
+        //         intake.changeState();
+        //     }
+        //     intake.moveIntake(intakeXbox.getAButton());
+        // }
         if (intakeXbox.getYButton()) {
             intake.setStateTo(true);
-            intake.resetSetpoint();
+            //intake.resetSetpoint();
         }
     }
 

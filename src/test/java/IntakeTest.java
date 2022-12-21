@@ -73,7 +73,7 @@ public class IntakeTest {
         testIntake.moveIntakeOverride(0.7);
         // Assert
         verify(PIDMock).setSetpoint(5000);
-        verify(motorMock).set(ControlMode.PercentOutput, 0.7);
+        verify(motorMock).set(argThat((ControlMode controlmode) -> controlmode == ControlMode.PercentOutput), doubleThat((Double value) -> Math.abs(value - 0.7 * 0.2) < 0.05));
     }
 
     @Test
@@ -83,17 +83,17 @@ public class IntakeTest {
         when(motorMock.getSelectedSensorPosition()).thenReturn(5000.);
         when(PIDMock.calculate(5000.)).thenReturn(1.2);
         // Act
-        testIntake.moveIntake();
+        testIntake.moveIntake(false);
         // Assert
-        verify(motorMock).set(ControlMode.PercentOutput, 1.);
+        verify(motorMock).set(ControlMode.PercentOutput, -0.3);
         // Arrange
         reset(motorMock, PIDMock);
         when(motorMock.getSelectedSensorPosition()).thenReturn(5000.);
-        when(PIDMock.calculate(5000.)).thenReturn(-0.7);
+        when(PIDMock.calculate(5000.)).thenReturn(-0.2);
         // Act
-        testIntake.moveIntake();
+        testIntake.moveIntake(false);
         // Assert
-        verify(motorMock).set(ControlMode.PercentOutput, -0.7);
+        verify(motorMock).set(ControlMode.PercentOutput, 0.2);
     }
 
     @Test
@@ -105,7 +105,7 @@ public class IntakeTest {
         // Act
         testIntake.changeState();
         // Assert
-        verify(PIDMock).setSetpoint(122880);
+        verify(PIDMock).setSetpoint(2048);
     }
 
     @Test
@@ -117,6 +117,6 @@ public class IntakeTest {
         // Act
         testIntake.changeState();
         // Assert
-        verify(PIDMock).setSetpoint(-122880);
+        verify(PIDMock).setSetpoint(-2048);
     }
 }

@@ -9,10 +9,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.Setup;
-import frc.robot.subsystems.DisplayControl;
 import frc.robot.subsystems.DrivebaseControl;
 import frc.robot.subsystems.IntakeControl;
-import frc.robot.subsystems.IntakeMotorTest;
+import frc.robot.subsystems.IntakePidTuning;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -28,10 +27,9 @@ public class Robot extends TimedRobot {
   Setup setup;
   DrivebaseControl drivebaseControl;
   IntakeControl intakeControl;
-  DisplayControl displayControl;
 
   // Test
-  // IntakeMotorTest intakeMotorTest;
+  // IntakePidTuning IntakePidTuning;
   // TalonSRX intakeMotor = new TalonSRX(2);
   // XboxController testXbox = new XboxController(0);
 
@@ -53,17 +51,16 @@ public class Robot extends TimedRobot {
     setup.teleopSetup();
     drivebaseControl = setup.getDrivebaseControl();
     intakeControl = setup.getIntakeControl();
-    displayControl = setup.getDisplayControl();
 
-    // intakeMotorTest = new IntakeMotorTest(intakeMotor, testXbox);
+    //IntakePidTuning = new IntakePidTuning(intakeMotor, testXbox);
   }
 
   @Override
   public void teleopPeriodic() {
     intakeControl.IntakeTick();
     drivebaseControl.DrivebaseTick();
-    displayControl.DisplayInfo();
-    // intakeMotorTest.tick();
+    setup.displayInfo();
+    // IntakePidTuning.tick();
   }
 
   @Override

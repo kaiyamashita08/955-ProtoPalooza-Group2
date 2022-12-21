@@ -53,4 +53,16 @@ public class IntakeControlTest {
         verify(mockElevator, never()).moveElevator(0);
         verify(mockElevator).moveElevator(-0.8);
     }
+
+    @Test
+    public void testIntakeOverride() {
+        // Arrange
+        reset(mockElevator, mockIntakeXbox, mockIntake);
+        when(mockIntakeXbox.getXButton()).thenReturn(true);
+        when(mockIntakeXbox.getLeftY()).thenReturn(0.4);
+        // Act
+        testIntakeControl.IntakeTick();
+        // Assert
+        verify(mockIntake).moveIntakeOverride(-0.4);
+    }
 }

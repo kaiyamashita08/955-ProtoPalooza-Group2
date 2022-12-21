@@ -6,10 +6,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Setup implements AutoCloseable{
     //Xbox
@@ -37,8 +40,9 @@ public class Setup implements AutoCloseable{
     // DrivebaseXbox
     DrivebaseControl drivebaseControl;
     IntakeControl intakeControl;
-    // Display
-    DisplayControl displayControl;
+    // Limelight
+    PhotonCamera camera;
+    Vision photonvision;
 
     public void teleopSetup() {
         drivebaseXbox = new XboxController(0);
@@ -67,16 +71,17 @@ public class Setup implements AutoCloseable{
         rightFollowMotor.follow(rightLeadMotor);
         drivebase = new Drivebase(differentialDrive);
         
-        intakeMotor = new TalonSRX(0);//need terminal
+        intakeMotor = new TalonSRX(9);//need terminal
         intakeMotor.configPeakCurrentLimit(40);
         intakeMotor.enableCurrentLimit(true);
         intakePID = new PIDController(kP, kI, kD);
         intake = new Intake(intakeMotor, intakePID);
 
-        drivebaseControl = new DrivebaseControl(drivebaseXbox, drivebase);
-        intakeControl = new IntakeControl(intakeXbox, elevator, intake);
+        camera = new PhotonCamera("photonvision");
+        photonvision = new Vision(camera);
 
-        displayControl = new DisplayControl(elevatorMotor, limitSwitchTop, limitSwitchBottom, leftLeadMotor, rightLeadMotor, leftFollowMotor, rightFollowMotor, intakeMotor);
+        drivebaseControl = new DrivebaseControl(drivebaseXbox, drivebase, photonvision);
+        intakeControl = new IntakeControl(intakeXbox, elevator, intake);
     }
     
     public DrivebaseControl getDrivebaseControl() {
@@ -86,9 +91,24 @@ public class Setup implements AutoCloseable{
     public IntakeControl getIntakeControl() {
         return intakeControl;
     }
-    
-    public DisplayControl getDisplayControl() {
-        return displayControl;
+
+    public void displayInfo() {
+        // Drivebase
+        SmartDashboard.putNumber("Left Lead Amps", leftLeadMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Right Lead Amps", rightLeadMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Left Follow Amps", leftFollowMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Right Follow Amps", rightFollowMotor.getOutputCurrent());
+
+        // Elevator
+        SmartDashboard.putBoolean("Elevator Top Limit Hit", limitSwitchTop.get());
+        SmartDashboard.putBoolean("Elevator Bottom Limit Hit", limitSwitchBottom.get());
+        SmartDashboard.putNumber("Elevator Amp", elevatorMotor.getStatorCurrent());
+        SmartDashboard.putNumber("Elevator Position", elevatorMotor.getSelectedSensorPosition());
+
+        // Intake
+        SmartDashboard.putNumber("Intake Position", intakeMotor.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Setpoint", intakePID.getSetpoint());
+        SmartDashboard.putBoolean("Is intake open", intake.isIntakeOpen);
     }
     
     @Override
@@ -103,9 +123,8 @@ public class Setup implements AutoCloseable{
         differentialDrive.close();
         drivebase.close();
         intakePID.close();
-        displayControl.close();
-        // intake.close();
-        // drivebaseControl.close();  (uncomment when we can close these)
-        // intakeControl.close();
+        intake.close();
+        drivebaseControl.close();
+        intakeControl.close();
     }
 }

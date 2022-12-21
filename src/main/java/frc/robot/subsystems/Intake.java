@@ -8,7 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 
 public class Intake implements AutoCloseable {
     // 4096 units per rotation for TalonSRX's
-    private double gearRatio = 60;
+    private double gearRatio = 1;
     private PIDController pidController;
     private TalonSRX intakeMotor;
     public boolean isIntakeOpen;
@@ -32,12 +32,16 @@ public class Intake implements AutoCloseable {
     }
 
     public void moveIntakeOverride(double percentOutput) {
-        intakeMotor.set(ControlMode.PercentOutput, percentOutput);
+        intakeMotor.set(ControlMode.PercentOutput, 0.2 * percentOutput);
         pidController.setSetpoint(intakeMotor.getSelectedSensorPosition());
     }
 
-    public void moveIntake() {
-        intakeMotor.set(ControlMode.PercentOutput, MathUtil.clamp(pidController.calculate(intakeMotor.getSelectedSensorPosition()), -1, 1));
+    public void moveIntake(boolean isPaused) {
+        if (!isPaused) {
+            intakeMotor.set(ControlMode.PercentOutput, MathUtil.clamp(-pidController.calculate(intakeMotor.getSelectedSensorPosition()), -0.3, 0.3));
+        } else {
+            intakeMotor.set(ControlMode.PercentOutput, 0);
+        }
     }
 
     public void changeState() {
